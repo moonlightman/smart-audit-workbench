@@ -1,0 +1,20 @@
+# 真实数据与密钥不入库
+.env
+.env.*
+!.env.example
+secrets/
+private-data/
+uploads/
+backups/
+*.pem
+*.key
+*.pfx
+*.sqlite
+*.db
+node_modules/
+dist/
+target/
+__pycache__/
+.venv/
+work/
+~$*
