@@ -1,0 +1,8 @@
+import {describe,it,expect} from 'vitest'
+import {seed,transition,auditor,reviewer,manager} from './workflow'
+describe('报送审核状态流转',()=>{
+ it('初审签收、下载、成果、复审完成',()=>{const r=seed().requests[0];transition(r,'签收','造价审计',auditor);expect(r.stage).toBe('待审核');transition(r,'下载资料','造价审计',auditor);expect(r.status).toBe('审核中');expect(()=>transition(r,'提交成果','造价审计',auditor)).toThrow('先上传');r.results.push({id:'result',name:'成果.txt',category:'成果'});transition(r,'提交成果','造价审计',auditor);expect(()=>transition(r,'复审通过','造价审计',auditor)).toThrow('复审人');transition(r,'复审通过','造价审计',reviewer);expect(r.status).toBe('已完成')})
+ it('退回理由必填，修改后重新上报保留历史',()=>{const r=seed().requests[0];expect(()=>transition(r,'退回','造价审计',auditor)).toThrow('理由');transition(r,'退回','造价审计',auditor,'缺少签章');transition(r,'重新上报','工程管理',manager);expect(r.status).toBe('已上报');expect(r.history.some(h=>h.includes('缺少签章'))).toBe(true)})
+ it('只读角色和非指定人员不能流转',()=>{const r=seed().requests[0];expect(()=>transition(r,'签收','资料查阅','查阅用户')).toThrow();expect(()=>transition(r,'签收','造价审计','其他人')).toThrow();expect(()=>transition(r,'签收','造价审计',reviewer)).toThrow();expect(()=>transition(r,'删除','资料查阅','查阅用户','测试')).toThrow()})
+ it('复审退回后初审重提，删除为逻辑删除',()=>{const r=seed().requests[0];transition(r,'签收','造价审计',auditor);transition(r,'下载资料','造价审计',auditor);r.results.push({id:'r',name:'r.txt',category:'成果'});transition(r,'提交成果','造价审计',auditor);transition(r,'退回','造价审计',reviewer,'重新核对');expect(r.status).toBe('复审退回');transition(r,'提交成果','造价审计',auditor);transition(r,'删除','工程管理',manager,'撤销错误报送');expect(r.deleted).toBe(true);expect(r.results.length).toBe(1);expect(r.history.length).toBeGreaterThan(4)})
+})

@@ -1,3 +1,5 @@
+> 2026-11-01更新：本文件与最新用户决定冲突的范围、角色、工期以 [需求校正V2](docs/REQUIREMENTS_V2.md) 为准。旧版保留历史，不得据此恢复本轮已取消的平台。
+
 # 本仓库AI协作规则
 
 首先阅读docs/DOT_PLAN.md、docs/MASTER_PLAN.md、docs/TECHNICAL_SPEC.md与STATUS.md。
