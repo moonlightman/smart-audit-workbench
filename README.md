@@ -1,3 +1,5 @@
+> 2026-11-02接手必读：[历史上下文](docs/CONVERSATION_HISTORY.md) 与 [Agent接手指南](docs/AGENT_HANDOFF.md)。用户纠正：只更新需求、重新梳理项目，不继续修改前端；旧原型非最终目标。
+
 # Smart Audit Workbench · 智慧审计工作台
 
 单人业务负责人 + OpenAI Dot + Codex协作建设的PC智慧审计平台。产品运行时LLM仅DeepSeek，开源优先。
